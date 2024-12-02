@@ -8,33 +8,6 @@ using namespace std;
 using json = nlohmann::json;
 
 
-class Custumer {
-    private:
-        Component_data component_data;
-        Customer_Data customer_data;
-        Component_data smoke_detector[2];
-        Component_data breaker[10];
-    
-    public:
-    Customer_Data retrieveCustomerData() {
-        return customer_data;
-    }
-    
-    void writeCustomerData(Customer_Data customer_data) {
-        this->customer_data = customer_data;
-    }
-    Component_data retrieveComponentData() {
-        return component_data;
-    }
-    void writeComponentData(Component_data component_data) {
-        this->component_data = component_data;
-    }
-    void printCustomer_and_components() {
-        cout << "Customer Data: " << customer_data.getName() << endl;
-        cout << "Component Data: " << component_data.getName() << endl;
-    }
-};
-
 
 class Customer_Data {
     private:
@@ -118,7 +91,32 @@ class Component_data {
         }
 };
 
-
+class Customer {
+    private:
+        Component_data component_data;
+        Customer_Data customer_data;
+        Component_data smoke_detector[2];
+        Component_data breaker[10];
+    
+    public:
+    Customer_Data retrieveCustomerData() {
+        return customer_data;
+    }
+    
+    void writeCustomerData(Customer_Data customer_data) {
+        this->customer_data = customer_data;
+    }
+    Component_data retrieveComponentData() {
+        return component_data;
+    }
+    void writeComponentData(Component_data component_data) {
+        this->component_data = component_data;
+    }
+    void printCustomer_and_components() {
+        cout << "Customer Data: " << customer_data.getName() << endl;
+        cout << "Component Data: " << component_data.getName() << endl;
+    }
+};
 
 void menuManager () {
     bool running = true;
