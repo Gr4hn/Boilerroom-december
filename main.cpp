@@ -30,7 +30,65 @@ struct Equipment {
     vector<Component> smoke_detector;
     vector<Component> breaker;
 };
+class Database {
+private:
+    json data;
+    string filename;
 
+public:
+    Database(const string& file) : filename(file) {
+        // Försök att ladda data vid instansiering
+        loadData();
+    }
+
+    void loadData() {
+        ifstream file(filename);
+        if (file.is_open()) {
+            file >> data;
+            file.close();
+        }
+    }
+
+    void saveData() {
+        ofstream file(filename);
+        if (file.is_open()) {
+            file << data.dump(4);  // Skriver ut JSON med indrag
+            file.close();
+        }
+    }
+
+    void addCustomer(const Customer& customer) {
+        json customerJson = {
+            {"customer_id", customer.customer_id},
+            {"name", customer.name},
+            {"address", customer.address},
+            {"PIN", customer.PIN},
+            {"tag_id", customer.tag_id},
+            {"verification_phrase", customer.verification_phrase}
+        };
+        data["customers"].push_back(customerJson);
+        saveData();
+    }
+
+    void addEquipment(const string& type, const Equipment::Component& component) {
+        json componentJson = {
+            {"id", component.id},
+            {"name", component.name}
+        };
+
+        if (type == "smoke_detector") {
+            data["equipment"]["smoke_detector"].push_back(componentJson);
+        } else if (type == "breaker") {
+            data["equipment"]["breaker"].push_back(componentJson);
+        }
+
+        saveData();
+    }
+
+    json getData() const {
+        return data;
+    }
+};
 
 
 
