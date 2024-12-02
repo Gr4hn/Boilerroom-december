@@ -1,6 +1,7 @@
 #include "nlohmann/json.hpp"
 #include <iostream>
 #include <fstream>
+#include <conio.h>
 
 
 using namespace std;
@@ -124,37 +125,54 @@ void menuManager () {
     do {
         int choice;
         cout << "Please select an option:" << endl;
-        cout << "1. " << endl;
-        cout << "2. " << endl;
-        cout << "3. " << endl;
-        cout << "4. " << endl;
+        cout << "1. Register new customer" << endl;
+        cout << "2. Edit customer" << endl;
+        cout << "3. Remove customer" << endl;
+        cout << "4. View customers" << endl;
         cout << "5. Quit" << endl;
         cout << endl << endl;
         cout << "Choice: ";
 
-        cin >> choice;
+        choice = getch();
         cout << endl << endl;
         switch (choice) {
-            case 1:                
+            case 1:
+                system("cls");
+                cout << "Customer ID" << endl;
+                cout << "Customer name" << endl;
+                cout << "Customer adress" << endl;
+                cout << "Customer PIN code" << endl;
+                cout << "Customer Tag-ID" << endl;
+                cout << "Customer verification phrase" << endl;
+                cout << "Customer equipment:" << endl;
+                cout << "\tSmoke detector:" << endl;
+                cout << "\t\tID:" << endl;
+                cout << "\t\tName:" << endl;
                 break;
             case 2:
-                cout << "Något" << endl;
+                system("cls");
+                cout << "1. Edit ID" << endl;
+                cout << "2. Edit name" << endl;
+                cout << "3. Edit adress" << endl;
+                cout << "4. Edit PIN code" << endl;
+                cout << "5. Edit Tag-ID" << endl;
+                cout << "6. Edit verification phrase" << endl;
+                cout << "7. Edit equipment" << endl;
+                cout << "8. Exit" << endl;
                 break;
             case 3:
+                system("cls");
                 cout << "Något" << endl;
                 break;
             case 4:
+                system("cls");
                 cout << "Något" << endl;
                 break;
             case 5:
-                cout << "Quit" << endl;
                 running = false;
                 break;
-            default:
-                cout << "Invalid choice" << endl;
-                break;
         }
-    } while (running == true);
+    } while (!running == false);
 };
 
 
