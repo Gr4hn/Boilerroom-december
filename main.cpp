@@ -7,17 +7,30 @@
 using namespace std;
 using json = nlohmann::json;
 
-struct Contact {
-    int id;
-    string firstName;
-    string lastName;
-    string email;
-    string phoneNumber;
+// Struktur för att representera en kund
+struct Customer {
+    int customer_id;
+    string name;
+    string address;
+    string PIN;
+    string tag_id;
+    string verification_phrase;
 };
 
-class Customer {};
-class User {};
-class Component {};
+//class Customer {};
+//class User {};
+//class Component {};
+
+struct Equipment {
+    struct Component {
+        int id;
+        string name;
+    };
+
+    vector<Component> smoke_detector;
+    vector<Component> breaker;
+};
+
 
 
 
@@ -26,10 +39,10 @@ void menuManager () {
     do {
         int choice;
         cout << "Please select an option:" << endl;
-        cout << "1. " << endl;
-        cout << "2. " << endl;
-        cout << "3. " << endl;
-        cout << "4. " << endl;
+        cout << "1. Register a new customer" << endl;
+        cout << "2. Register new equipment" << endl;
+        cout << "3. Show customer info" << endl;
+        cout << "4. Show equipment info" << endl;
         cout << "5. Quit" << endl;
         cout << endl << endl;
         cout << "Choice: ";
