@@ -3,21 +3,119 @@
 #include <fstream>
 
 
-
 using namespace std;
 using json = nlohmann::json;
 
-struct Contact {
-    int id;
-    string firstName;
-    string lastName;
-    string email;
-    string phoneNumber;
+
+class Custumer {
+    private:
+        Component_data component_data;
+        Customer_Data customer_data;
+        Component_data smoke_detector[2];
+        Component_data breaker[10];
+    
+    public:
+    Customer_Data retrieveCustomerData() {
+        return customer_data;
+    }
+    
+    void writeCustomerData(Customer_Data customer_data) {
+        this->customer_data = customer_data;
+    }
+    Component_data retrieveComponentData() {
+        return component_data;
+    }
+    void writeComponentData(Component_data component_data) {
+        this->component_data = component_data;
+    }
+    void printCustomer_and_components() {
+        cout << "Customer Data: " << customer_data.getName() << endl;
+        cout << "Component Data: " << component_data.getName() << endl;
+    }
 };
 
-class Customer {};
-class User {};
-class Component {};
+
+class Customer_Data {
+    private:
+        string ID;
+        string name;
+        string adress;
+        string PIN;
+        string tag_ID;
+        string verification_phrase;
+    public:
+    Customer_Data(string name, int adress) {
+            this->ID = ID;
+            this->name = name;
+            this->adress = adress;
+            this->PIN = PIN;
+            this->tag_ID = tag_ID;
+            this->verification_phrase = verification_phrase;
+
+    }
+    void setID(string ID) {
+            cout << name;
+        }
+    string getID() {
+            cout << ID;
+        }
+    void setName (string name) {
+            cout << name;
+        }
+    string getName() {
+            return name;
+        }
+    void setAdress(string adress) {
+            cout << adress;
+        }
+    string getAdress() {
+            cout << adress;
+        }
+    void setPIN(string PIN) {
+            cout << PIN;
+        }
+    string getPIN() {
+            cout << PIN;
+        }
+    void setTagID(string tag_ID) {
+            cout << tag_ID;
+        }
+    string getTagID() {
+            cout << tag_ID;
+        }
+    void setVerificationPhrase(string verification_phrase) {
+            cout << verification_phrase;
+        }
+    string getVerificationPhrase() {
+            cout << verification_phrase;
+        }
+};
+class Component_data {
+    private:
+        string name;
+        string ID;
+    
+    public:
+    Component_data(string name, string ID) {
+            this->name = name;
+            this->ID = ID;
+    }
+    string getName() {
+            return name;
+        }
+
+    void getID() {
+            cout << ID;
+        }
+
+    void setName(string name) {
+            this->name = name;
+        }
+
+    void setID(string ID) {
+            this->ID = ID;
+        }
+};
 
 
 
@@ -37,8 +135,7 @@ void menuManager () {
         cin >> choice;
         cout << endl << endl;
         switch (choice) {
-            case 1:
-                cout << "Något" << endl;
+            case 1:                
                 break;
             case 2:
                 cout << "Något" << endl;
@@ -51,20 +148,19 @@ void menuManager () {
                 break;
             case 5:
                 cout << "Quit" << endl;
+                running = false;
+                break;
+            default:
+                cout << "Invalid choice" << endl;
+                break;
         }
-    } while (!running == false);
+    } while (running == true);
 };
+
+
 
 int main () {
 
-   /*  try {
-        contacts = ContactManager::loadContacts("contactDB.json");
-    }
-    catch (const exception& e) {
-         cout << "Error: Could not open file" << endl;
-         return 1;
-    } */
-   
    menuManager();
     
 
