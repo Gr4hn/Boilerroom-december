@@ -1,0 +1,29 @@
+{
+    "customers": [
+        {
+            "customer_id": 1,
+            "name": "Arne Svensson",
+            "adress": "Bla bla  1",
+            "PIN": "1234", 
+            "tag_id": "234", 
+            "Verification phraze": "I am Arne Svensson"
+        }
+    ],   
+
+    "Equipment": [
+        {
+            "Smoke_detector":[
+                {
+                    "id": 1,
+                    "name": "Smokemax x2000"
+                }
+            ],
+            "Breaker": [
+                {
+                    "id": 1,
+                    "name": "Breaker x2000"
+                }
+            ]
+        }
+    ]
+}
