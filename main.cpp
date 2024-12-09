@@ -9,6 +9,8 @@ using json = nlohmann::json;
 
 
 
+
+
 class Customer_Data {
     private:
         string ID;
@@ -18,6 +20,25 @@ class Customer_Data {
         string tag_ID;
         string verification_phrase;
     public:
+
+    Customer_Data() {
+            this->ID = "";
+            this->name = "";
+            this->adress = "";
+            this->PIN = "";
+            this->tag_ID = "";
+            this->verification_phrase = "";
+    }
+
+    Customer_Data(const string &ID, const string &name, const string &adress, const string &PIN, const string &tag_ID, const string &verification_phrase) {
+            this->ID = ID;
+            this->name = name;
+            this->adress = adress;
+            this->PIN = PIN;
+            this->tag_ID = tag_ID;
+            this->verification_phrase = verification_phrase;
+    }
+
     Customer_Data(string name, int adress) {
             this->ID = ID;
             this->name = name;
@@ -25,9 +46,8 @@ class Customer_Data {
             this->PIN = PIN;
             this->tag_ID = tag_ID;
             this->verification_phrase = verification_phrase;
-
     }
-    void setID(string ID) {
+/*     void setID(string ID) {
             cout << name;
         }
     string getID() {
@@ -62,7 +82,17 @@ class Customer_Data {
         }
     string getVerificationPhrase() {
             cout << verification_phrase;
-        }
+        } */
+    Customer_Data fromJson(const json& j) {
+        return Customer_Data(
+            j.at("ID").get<string>(),
+            j.at("name").get<string>(),
+            j.at("adress").get<string>(),
+            j.at("PIN").get<string>(),
+            j.at("tag_ID").get<string>(),
+            j.at("verification_phrase").get<string>()
+        );
+    }
 };
 class Component_data {
     private:
@@ -93,13 +123,17 @@ class Component_data {
 
 class Customer {
     private:
-        Component_data component_data;
         Customer_Data customer_data;
         Component_data smoke_detector[2];
         Component_data breaker[10];
     
     public:
-    Customer_Data retrieveCustomerData() {
+    Customer() {
+            //this->customer_data = 0;
+            //this->smoke_detector = nullptr;
+            //this->breaker = nullptr;
+    }
+    /* Customer_Data retrieveCustomerData() {
         return customer_data;
     }
     
@@ -115,6 +149,33 @@ class Customer {
     void printCustomer_and_components() {
         cout << "Customer Data: " << customer_data.getName() << endl;
         cout << "Component Data: " << component_data.getName() << endl;
+    } */
+
+    static Customer_Data retriveData(const string &filename) {
+        ifstream file(filename);
+        if (!file) {
+            cout << "Error opening file " << filename << endl;
+            return;
+        }
+
+        json jsonFile;
+        file >> jsonFile;
+        Customer_Data c = Customer_Data::fromJson(jsonFile); 
+
+        
+        for (const auto& person : jsonFile) {
+            Customer_data.push_back({
+                person["id"].get<string>(),
+                person["name"].get<string>(),
+                person["adress"].get<string>(),
+                person["pin"].get<string>(),
+                person["tag_id"].get<string>(),
+                person["verification_phrase"].get<string>()
+            });
+        }
+
+        cout << "Successfully loaded contacts" << endl;
+        return c;
     }
 };
 
@@ -176,6 +237,17 @@ void menuManager () {
 
 
 int main () {
+
+    Customer customer;
+    Customer_Data customer_data;
+
+    try {
+        customer_data = Customer::retriveData("customers.json");
+    }
+    catch (const exception& e) {
+            cout << "Error: Could not open file" << endl;
+            return 1;
+    }
 
    menuManager();
     
