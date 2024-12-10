@@ -30,15 +30,6 @@ class Customer_Data {
             this->verification_phrase = "";
     }
 
-    Customer_Data(const string &ID, const string &name, const string &adress, const string &PIN, const string &tag_ID, const string &verification_phrase) {
-            this->ID = ID;
-            this->name = name;
-            this->adress = adress;
-            this->PIN = PIN;
-            this->tag_ID = tag_ID;
-            this->verification_phrase = verification_phrase;
-    }
-
     Customer_Data(string name, int adress) {
             this->ID = ID;
             this->name = name;
@@ -47,53 +38,39 @@ class Customer_Data {
             this->tag_ID = tag_ID;
             this->verification_phrase = verification_phrase;
     }
-/*     void setID(string ID) {
-            cout << name;
-        }
-    string getID() {
-            cout << ID;
-        }
-    void setName (string name) {
-            cout << name;
-        }
-    string getName() {
-            return name;
-        }
-    void setAdress(string adress) {
-            cout << adress;
-        }
-    string getAdress() {
-            cout << adress;
-        }
-    void setPIN(string PIN) {
-            cout << PIN;
-        }
-    string getPIN() {
-            cout << PIN;
-        }
-    void setTagID(string tag_ID) {
-            cout << tag_ID;
-        }
-    string getTagID() {
-            cout << tag_ID;
-        }
-    void setVerificationPhrase(string verification_phrase) {
-            cout << verification_phrase;
-        }
-    string getVerificationPhrase() {
-            cout << verification_phrase;
-        } */
-    Customer_Data fromJson(const json& j) {
+
+    Customer_Data(string id, string name, string adress, string pin, string tagID, string verificationPhrase)
+        : ID(id), name(name), adress(adress), PIN(pin), tag_ID(tagID), verification_phrase(verificationPhrase) {}
+
+    //Getters
+    string getID() const { return ID; }
+    string getName() const { return name; }
+    string getAddress() const { return adress; }
+    string getPIN() const { return PIN; }
+    string getTagID() const { return tag_ID; }
+    string getVerificationPhrase() const { return verification_phrase; }
+
+
+    //Setters
+    void setID(const string& id) { ID = id; }
+    void setName(const string& name) { this->name = name; }
+    void setAddress(const string& address) { this->adress = adress; }
+    void setPIN(const string& pin) { PIN = pin; }
+    void setTagID(const string& tagID) { tag_ID = tagID; }
+    void setVerificationPhrase(const string& verificationPhrase) { verification_phrase = verificationPhrase; }
+
+    static Customer_Data fromJson(const json& j) {
         return Customer_Data(
-            j.at("ID").get<string>(),
+            j.at("customer_id").get<string>(),
             j.at("name").get<string>(),
             j.at("adress").get<string>(),
             j.at("PIN").get<string>(),
-            j.at("tag_ID").get<string>(),
+            j.at("tag_id").get<string>(),
             j.at("verification_phrase").get<string>()
         );
     }
 };
+
 class Component_data {
     private:
         string name;
@@ -123,16 +100,35 @@ class Component_data {
 
 class Customer {
     private:
-        Customer_Data customer_data;
-        Component_data smoke_detector[2];
-        Component_data breaker[10];
+        vector<Customer_Data> customer_data;
+        /* Component_data smoke_detector;
+        Component_data breaker; */
     
     public:
-    Customer() {
-            //this->customer_data = 0;
-            //this->smoke_detector = nullptr;
-            //this->breaker = nullptr;
-    }
+        Customer() {
+            this->customer_data = customer_data;
+        }
+
+        static vector<Customer_Data> retriveData(const string &dataBase) {
+            vector<Customer_Data> currentCustomers;
+            ifstream retrive(dataBase);
+            if (!retrive) {
+                cout << "Error opening file " << dataBase << endl;
+                return {};
+            }
+
+            json jsonFile;
+            retrive >> jsonFile;
+
+            for (const auto& item : jsonFile) {
+                currentCustomers.push_back(Customer_Data::fromJson(item));
+            }
+
+            cout << "Successfully loaded contacts" << endl;
+            return currentCustomers;
+        }
+
+
     /* Customer_Data retrieveCustomerData() {
         return customer_data;
     }
@@ -150,34 +146,9 @@ class Customer {
         cout << "Customer Data: " << customer_data.getName() << endl;
         cout << "Component Data: " << component_data.getName() << endl;
     } */
-
-    static Customer_Data retriveData(const string &filename) {
-        ifstream file(filename);
-        if (!file) {
-            cout << "Error opening file " << filename << endl;
-            return;
-        }
-
-        json jsonFile;
-        file >> jsonFile;
-        Customer_Data c = Customer_Data::fromJson(jsonFile); 
-
-        
-        for (const auto& person : jsonFile) {
-            Customer_data.push_back({
-                person["id"].get<string>(),
-                person["name"].get<string>(),
-                person["adress"].get<string>(),
-                person["pin"].get<string>(),
-                person["tag_id"].get<string>(),
-                person["verification_phrase"].get<string>()
-            });
-        }
-
-        cout << "Successfully loaded contacts" << endl;
-        return c;
-    }
 };
+
+
 
 void menuManager () {
     bool running = true;
@@ -192,7 +163,7 @@ void menuManager () {
         cout << endl << endl;
         cout << "Choice: ";
 
-        choice = getch();
+        cin >> choice;
         cout << endl << endl;
         switch (choice) {
             case 1:
@@ -207,6 +178,7 @@ void menuManager () {
                 cout << "\tSmoke detector:" << endl;
                 cout << "\t\tID:" << endl;
                 cout << "\t\tName:" << endl;
+                //addCustomer(); //Tillfällig, inmplementeras senare.
                 break;
             case 2:
                 system("cls");
@@ -218,90 +190,46 @@ void menuManager () {
                 cout << "6. Edit verification phrase" << endl;
                 cout << "7. Edit equipment" << endl;
                 cout << "8. Exit" << endl;
+                //editCustomer(); // Tillfällig, inmplementeras senare.
                 break;
             case 3:
                 system("cls");
                 cout << "Något" << endl;
+                //removeCustomer(); // Tillfällig, inmplementeras senare.
                 break;
             case 4:
                 system("cls");
                 cout << "Något" << endl;
+                //viewCustomers(); Tillfällig, inmplementeras senare.
                 break;
             case 5:
+                cout << "Qutting customer managment program";
                 running = false;
                 break;
+            default: 
+                cout << "Enter a choice from the list." << endl << endl;
+                break;
         }
-    } while (!running == false);
+    } while (running == true);
 };
 
 
 
 int main () {
+    vector<Customer_Data> customerList;
 
-    Customer customer;
-    Customer_Data customer_data;
+    string dataBase = "C:/users/eric/boilerroom-december/customers.json";
 
     try {
-        customer_data = Customer::retriveData("customers.json");
+        customerList = Customer::retriveData(dataBase);
     }
     catch (const exception& e) {
-            cout << "Error: Could not open file" << endl;
+            cout << "Error: " << e.what() << endl;
             return 1;
     }
 
-   menuManager();
-    
+    menuManager();
 
     cout << "Goodbye!" << endl;
     return 0;
 }
-
-
-/*class Customer {
-    private:
-        string name;
-        int adress;
-    
-    public:
-    Customer(string name, int adress) {
-            this->name = name;
-            this->adress = adress;
-    }
-    void getName() {
-            cout << name;
-        }
-
-    void getAdress() {
-            cout << adress;
-        }
-
-    void setName(string name) {
-            this->name = name;
-        }
-
-    void setAdress(int adress) {
-            this->adress = adress;
-        }
-};
-
-
-class user {
-    private:
-        string name;
-        int adress;
-        int ID;
-        int code;
-        string tagID;
-        string stringForDeactivation;
-
-    public:
-    user(string name, int adress) {
-            this->name = name;
-            this->adress = adress;
-            this->ID = ID;
-            this->code = code;
-            this->tagID = tagID;
-            this->stringForDeactivation = stringForDeactivation;
-    }
-    
-}; */
